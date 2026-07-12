@@ -1,0 +1,23 @@
+app:
+  name: Paiements
+
+spring:
+  kafka:
+    consumer:
+      group-id: paiements-billing
+      topic: orders.created
+      produced-by-application: Service commandes
+  rabbitmq:
+    listener:
+      queues: billing.events
+      produced-by-application: Service commandes
+
+payment:
+  charge-endpoint: /api/v1/charge
+  callers:
+    - API Gateway
+    - Service commandes
+
+export:
+  nas-path: //nas-corp/clients/incoming
+  target-application: Base clients
