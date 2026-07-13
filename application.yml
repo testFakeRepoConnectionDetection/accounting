@@ -1,5 +1,7 @@
 app:
   name: Paiements
+  flow-enrichment:
+    data-category-field: data_category
 
 spring:
   kafka:
@@ -7,17 +9,29 @@ spring:
       group-id: paiements-billing
       topic: orders.created
       produced-by-application: Service commandes
+      message:
+        data-category: ORDER_CREATED_EVENT
   rabbitmq:
     listener:
       queues: billing.events
       produced-by-application: Service commandes
+      message:
+        data-category: BILLING_INVOICE_REQUEST
 
 payment:
   charge-endpoint: /api/v1/charge
+  data-category: CHARGE_INSTRUCTION
   callers:
     - API Gateway
     - Service commandes
 
+inbound-routes:
+  api-gateway:
+    data-category: PAYMENT_REQUEST
+
 export:
   nas-path: //nas-corp/clients/incoming
   target-application: Base clients
+  data-category: SETTLEMENT_EXPORT
+  payload-format: CSV
+  payload-type: fixture.dto.SettlementExportRow
