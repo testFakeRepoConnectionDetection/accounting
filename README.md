@@ -1,5 +1,7 @@
 # Accounting (fixture)
 
+Business function: `BACK_OFFICE` (`app.business_function`).
+
 General ledger. Receives valuation rates and settlement cash, then publishes balances to Finance.
 
 ## Integrations (topology)
