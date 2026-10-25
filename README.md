@@ -1,10 +1,10 @@
 # Accounting (fixture)
 
-General ledger. Books trade events and settlement cash, then publishes balances to Finance.
+General ledger. Receives valuation rates and settlement cash, then publishes balances to Finance.
 
 ## Integrations (topology)
 
-- Consumes Kafka topic `accounting.events` produced by **Booking**.
+- Exposes `/api/v1/valuation-rates` called by **DataHub**.
 - Exposes `/api/v1/cash-movements` called by **Settlement**.
 - Produces Kafka topic `ledger.balances` consumed by **Finance**.
 
@@ -12,7 +12,7 @@ General ledger. Books trade events and settlement cash, then publishes balances 
 
 | Peer | direction | Kind | Channel | data_category |
 |------|-----------|------|---------|---------------|
-| Booking | inbound | KAFKA | accounting.events | `ACCOUNTING_EVENT` |
+| DataHub | inbound | API | /valuation-rates | `VALUATION_RATES` |
 | Settlement | inbound | API | /cash-movements | `CASH_MOVEMENT` |
 | Finance | outbound | KAFKA | ledger.balances | `LEDGER_BALANCE` |
 

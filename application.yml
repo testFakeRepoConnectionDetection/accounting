@@ -5,13 +5,6 @@ app:
 
 spring:
   kafka:
-    consumer:
-      group-id: accounting-ledger
-      topic: accounting.events
-      produced-by-application: Booking
-      message:
-        data-category: ACCOUNTING_EVENT
-        payload-format: AVRO
     producer:
       bootstrap-servers: kafka.internal:9092
       topic: ledger.balances
@@ -22,11 +15,15 @@ spring:
         payload-format: AVRO
 
 api:
+  valuation-rates:
+    path: /api/v1/valuation-rates
+    data-category: VALUATION_RATES
+    called-by-application: DataHub
   cash-movements:
     path: /api/v1/cash-movements
     data-category: CASH_MOVEMENT
     called-by-application: Settlement
 
 callers:
-  - Booking
+  - DataHub
   - Settlement
