@@ -1,37 +1,32 @@
 app:
-  name: Paiements
+  name: Accounting
   flow-enrichment:
     data-category-field: data_category
 
 spring:
   kafka:
     consumer:
-      group-id: paiements-billing
-      topic: orders.created
-      produced-by-application: Service commandes
+      group-id: accounting-ledger
+      topic: accounting.events
+      produced-by-application: Booking
       message:
-        data-category: ORDER_CREATED_EVENT
-  rabbitmq:
-    listener:
-      queues: billing.events
-      produced-by-application: Service commandes
+        data-category: ACCOUNTING_EVENT
+        payload-format: AVRO
+    producer:
+      bootstrap-servers: kafka.internal:9092
+      topic: ledger.balances
+      consumed-by-application: Finance
       message:
-        data-category: BILLING_INVOICE_REQUEST
+        data-category: LEDGER_BALANCE
+        payload-type: fixture.dto.LedgerBalanceEvent
+        payload-format: AVRO
 
-payment:
-  charge-endpoint: /api/v1/charge
-  data-category: CHARGE_INSTRUCTION
-  callers:
-    - API Gateway
-    - Service commandes
+api:
+  cash-movements:
+    path: /api/v1/cash-movements
+    data-category: CASH_MOVEMENT
+    called-by-application: Settlement
 
-inbound-routes:
-  api-gateway:
-    data-category: PAYMENT_REQUEST
-
-export:
-  nas-path: //nas-corp/clients/incoming
-  target-application: Base clients
-  data-category: SETTLEMENT_EXPORT
-  payload-format: CSV
-  payload-type: fixture.dto.SettlementExportRow
+callers:
+  - Booking
+  - Settlement

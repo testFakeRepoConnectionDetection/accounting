@@ -1,22 +1,19 @@
-# Paiements (fixture)
+# Accounting (fixture)
 
-Payment processing service.
+General ledger. Books trade events and settlement cash, then publishes balances to Finance.
 
 ## Integrations (topology)
 
-- Consumes Kafka topic `orders.created` produced by **Service commandes**.
-- Listens on AMQP queue `billing.events` from **Service commandes**.
-- Exposes `/api/v1/charge` for **API Gateway** and **Service commandes**.
-- Writes export files to NAS `//nas-corp/clients/incoming` for **Base clients**.
+- Consumes Kafka topic `accounting.events` produced by **Booking**.
+- Exposes `/api/v1/cash-movements` called by **Settlement**.
+- Produces Kafka topic `ledger.balances` consumed by **Finance**.
 
 ## Data transiting on flows (Data Model fixture)
 
 | Peer | direction | Kind | Channel | data_category |
 |------|-----------|------|---------|---------------|
-| Service commandes | inbound | KAFKA | orders.created | `ORDER_CREATED_EVENT` |
-| Service commandes | inbound | MQ | billing.events | `BILLING_INVOICE_REQUEST` |
-| Service commandes | inbound | API | /charge | `CHARGE_INSTRUCTION` |
-| API Gateway | inbound | API | /charge | `PAYMENT_REQUEST` |
-| Base clients | outbound | NAS | //nas-corp/clients/incoming | `SETTLEMENT_EXPORT` |
+| Booking | inbound | KAFKA | accounting.events | `ACCOUNTING_EVENT` |
+| Settlement | inbound | API | /cash-movements | `CASH_MOVEMENT` |
+| Finance | outbound | KAFKA | ledger.balances | `LEDGER_BALANCE` |
 
-See `TransitDataTypes.java`, `SettlementExportRow.java`, `application.yml`.
+See `TransitDataTypes.java`, `LedgerBalanceEvent.java`, and `application.yml`.

@@ -1,16 +1,17 @@
 package fixture.flow;
 
 /**
- * Data categories on Paiements inbound/outbound flows.
- * grep: SETTLEMENT_EXPORT ORDER_CREATED_EVENT BILLING_INVOICE_REQUEST CHARGE_INSTRUCTION
+ * Data categories on Accounting flows.
+ * grep: ACCOUNTING_EVENT CASH_MOVEMENT LEDGER_BALANCE
  */
 public final class TransitDataTypes {
 
-  public static final String KAFKA_INBOUND = "ORDER_CREATED_EVENT";
-  public static final String MQ_INBOUND = "BILLING_INVOICE_REQUEST";
-  public static final String API_CHARGE_INBOUND = "CHARGE_INSTRUCTION";
-  public static final String API_PAYMENT_REQUEST = "PAYMENT_REQUEST";
-  public static final String NAS_OUTBOUND = "SETTLEMENT_EXPORT";
+  public static final String KAFKA_ACCOUNTING_EVENT = "ACCOUNTING_EVENT";
+  public static final String API_CASH_MOVEMENT = "CASH_MOVEMENT";
+  public static final String KAFKA_LEDGER_BALANCE = "LEDGER_BALANCE";
+
+  public static final String KAFKA_PAYLOAD_FORMAT = "AVRO";
+  public static final String API_PAYLOAD_FORMAT = "JSON";
 
   private TransitDataTypes() {}
 }

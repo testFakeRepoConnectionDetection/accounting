@@ -1,27 +1,19 @@
 package fixture;
 
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Inbound from Service commandes (Kafka/MQ/API); outbound NAS export to Base clients.
+ * Ledger fed by Booking and Settlement. Publishes balances to Finance.
  *
- * <p>data_category: ORDER_CREATED_EVENT (Kafka), BILLING_INVOICE_REQUEST (MQ),
- * CHARGE_INSTRUCTION / PAYMENT_REQUEST (API), SETTLEMENT_EXPORT (NAS outbound).
+ * <p>data_category: ACCOUNTING_EVENT (Kafka inbound), CASH_MOVEMENT (API inbound),
+ * LEDGER_BALANCE (Kafka outbound).
  */
-@RestController
-@RequestMapping("/api/v1/charge")
 public class IntegrationHints {
 
-  /** data_category ORDER_CREATED_EVENT — produced by Service commandes */
-  @KafkaListener(topics = "orders.created", groupId = "paiements-billing")
-  public void onOrderCreated(String payload) {}
+  /** data_category ACCOUNTING_EVENT — produced by Booking */
+  @KafkaListener(topics = "accounting.events", groupId = "accounting-ledger")
+  public void onAccountingEvent(String payload) {}
 
-  /** data_category BILLING_INVOICE_REQUEST — produced by Service commandes */
-  @RabbitListener(queues = "billing.events")
-  public void onBillingEvent(String payload) {}
-
-  // NAS export SettlementExportRow → Base clients, data_category SETTLEMENT_EXPORT
+  // POST /api/v1/cash-movements from Settlement — data_category CASH_MOVEMENT
+  // KafkaTemplate.send("ledger.balances", LedgerBalanceEvent) — LEDGER_BALANCE toward Finance
 }
