@@ -1,6 +1,7 @@
 app:
   name: Accounting
   business_function: BACK_OFFICE
+  pillar: "Ledger Servicing"
   flow-enrichment:
     data-category-field: data_category
 

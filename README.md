@@ -1,6 +1,7 @@
 # Accounting (fixture)
 
 Business function: `BACK_OFFICE` (`app.business_function`).
+Pillar: `Ledger Servicing` (`app.pillar`).
 
 General ledger. Receives valuation rates and settlement cash, then publishes balances to Finance.
 
