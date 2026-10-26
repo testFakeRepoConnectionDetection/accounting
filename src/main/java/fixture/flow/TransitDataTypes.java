@@ -1,8 +1,8 @@
 package fixture.flow;
 
 /**
- * Data categories on Accounting flows.
- * grep: VALUATION_RATES CASH_MOVEMENT LEDGER_BALANCE
+ * Edge attributes on Accounting flows.
+ * grep: data frequency cashflow daily monthly
  */
 public final class TransitDataTypes {
 
@@ -12,12 +12,9 @@ public final class TransitDataTypes {
   /** Node attribute pillar for Accounting. */
   public static final String PILLAR = "Ledger Servicing";
 
-  public static final String API_VALUATION_RATES = "VALUATION_RATES";
-  public static final String API_CASH_MOVEMENT = "CASH_MOVEMENT";
-  public static final String KAFKA_LEDGER_BALANCE = "LEDGER_BALANCE";
-
-  public static final String KAFKA_PAYLOAD_FORMAT = "AVRO";
-  public static final String API_PAYLOAD_FORMAT = "JSON";
+  public static final String DATA_CASHFLOW = "cashflow";
+  public static final String FREQUENCY_DAILY = "daily";
+  public static final String FREQUENCY_MONTHLY = "monthly";
 
   private TransitDataTypes() {}
 }

@@ -4,16 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Ledger fed by DataHub and Settlement. Publishes balances to Finance.
+ * Cashflow in from Settlement, cashflow out to Finance.
  *
- * <p>data_category: VALUATION_RATES (API inbound), CASH_MOVEMENT (API inbound),
- * LEDGER_BALANCE (Kafka outbound).
+ * <p>Edge fields: data cashflow frequency daily from Settlement.
+ * data cashflow frequency monthly toward Finance.
  */
 @RestController
 @RequestMapping("/api/v1/cash-movements")
 public class IntegrationHints {
 
-  // POST /api/v1/valuation-rates from DataHub — data_category VALUATION_RATES
-  // POST /api/v1/cash-movements from Settlement — data_category CASH_MOVEMENT
-  // KafkaTemplate.send("ledger.balances", LedgerBalanceEvent) — LEDGER_BALANCE toward Finance
+  // POST /api/v1/cash-movements from Settlement — data cashflow, frequency daily
+  // KafkaTemplate.send("finance.cashflows") — data cashflow, frequency monthly, toward Finance
 }

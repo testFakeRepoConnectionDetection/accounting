@@ -3,29 +3,27 @@ app:
   business_function: BACK_OFFICE
   pillar: "Ledger Servicing"
   flow-enrichment:
-    data-category-field: data_category
+    data-field: data
+    frequency-field: frequency
 
 spring:
   kafka:
     producer:
       bootstrap-servers: kafka.internal:9092
-      topic: ledger.balances
+      topic: finance.cashflows
       consumed-by-application: Finance
+      connection-kind: KAFKA
       message:
-        data-category: LEDGER_BALANCE
-        payload-type: fixture.dto.LedgerBalanceEvent
-        payload-format: AVRO
+        data: cashflow
+        frequency: monthly
 
 api:
-  valuation-rates:
-    path: /api/v1/valuation-rates
-    data-category: VALUATION_RATES
-    called-by-application: DataHub
   cash-movements:
     path: /api/v1/cash-movements
-    data-category: CASH_MOVEMENT
     called-by-application: Settlement
+    connection-kind: API
+    data: cashflow
+    frequency: daily
 
 callers:
-  - DataHub
   - Settlement
